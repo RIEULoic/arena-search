@@ -1,7 +1,15 @@
 import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
+const titleFont = localFont({
+  src: "../../public/fonts/Boogaloo-Regular.ttf",
+  //Je ne sais pas pourquoi, mais je suis obligé de mettre le chemin complet avec les ../../ à la con, sinon "module not found" avec le chemin relatif.
+  //Je ne sais pas si il vaut mieux placer les fonts dans public ou dans src.
+  display: "swap",
+  variable: "--font-local",
+});
 
 export const metadata = {
   title: "Create Next App",
@@ -10,7 +18,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={titleFont.variable}>
       <body className={inter.className}>{children}</body>
     </html>
   );
