@@ -1,6 +1,11 @@
 import { promises as fs } from "fs";
 import Image from "next/image";
 
+//font awesome du cul
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+
 export default async function Home() {
   const arenaGameData = JSON.parse(
     await fs.readFile(
@@ -11,7 +16,7 @@ export default async function Home() {
   );
 
   return (
-    <div className="p-5 text-gray-600 grid lg:grid-cols-5  md:grid-cols-3 sm:grid-cols-2 ">
+    <div className="p-5 grid lg:grid-cols-5  md:grid-cols-3 sm:grid-cols-2 ">
       {arenaGameData.map((game) => (
         <div key={game.geekId} className="p-4 mb-4 ">
           <div className="flex flex-col group border-2 border-amber-600 h-full pt-6 rounded-xl bg-gradient-to-r from-yellow-300 to-stone-200  shadow-lg hover:shadow-lg hover:shadow-amber-800 hover:scale-110 transition-all duration-200 ease-in-out">
@@ -25,26 +30,43 @@ export default async function Home() {
               />
             </div>
             <div className="p-6 flex-grow">
-              <h2 className="tracking-widest text-xs font-medium text-gray-400 mb-1">
+              <h2 className="tracking-widest text-xs font-medium text-gray-500 mb-1">
                 Année?
               </h2>
-              <h1 className="font-title text-3xl  text-center font-medium text-gray-600 mb-3">
+              <h1 className="font-title text-3xl  text-center font-medium text-zinc-700 mb-3">
                 {game.name}
               </h1>
-              <ul className="leading-relaxed mb-3">
+              <ul>
                 {game.gameCategoryLinks.map((category) => (
-                  <li key={game.geekID} className="text-center">
+                  <li
+                    key={game.geekId + category.id}
+                    className="font-category text-center text-2xl text-gray-500"
+                  >
                     {category.value}
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="flex justify-between flex-wrap mb-4 ">
-              <div>{`${game.minPlayers} to ${game.maxPlayers} players`}</div>
-              <button className="bg-gradient-to-r from-cyan-400 to-blue-400 hover:scale-105 drop-shadow-md px-4 py-1 rounded-lg">
+            <div className="flex justify-between items-center flex-wrap mb-1 px-3">
+              <div className="flex flex-col">
+                <FontAwesomeIcon icon={faUsers} size="2x" className="mb-1" />
+                {game.minPlayers === game.maxPlayers ? (
+                  <div className="flex justify-center">{game.minPlayers}</div>
+                ) : (
+                  <div className="flex justify-center">{`${game.minPlayers} - ${game.maxPlayers}`}</div>
+                )}
+              </div>
+              <button className="text-xl text-gray-700 bg-gradient-to-r from-slate-400 to-stone-200 hover:scale-110 transition-all duration-200 ease-in-out drop-shadow-xl px-4 py-1 rounded-xl border-2 border-blue-400">
                 Learn more
               </button>
-              <div>complexity</div>
+              <div className="flex flex-col">
+                <FontAwesomeIcon icon={faGear} size="2x" className="mb-1" />
+
+                <div className="flex justify-center">
+                  {/*Petite formule pour arrondir à 2 chiffres après la virgule */}
+                  {Math.round(game.geekComplexity * 100) / 100}
+                </div>
+              </div>
             </div>
           </div>
         </div>

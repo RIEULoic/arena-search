@@ -2,13 +2,25 @@ import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
+//Import pour que fontawesome fonctionne correctement sous nextjs
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+config.autoAddCss = false;
+
 const inter = Inter({ subsets: ["latin"] });
 const titleFont = localFont({
-  src: "../../public/fonts/Boogaloo-Regular.ttf",
-  //Je ne sais pas pourquoi, mais je suis obligé de mettre le chemin complet avec les ../../ à la con, sinon "module not found" avec le chemin relatif.
+  src: "../../public/fonts/junegull-rg.otf",
+  //Je ne sais pas pourquoi, mais je suis obligé de mettre le chemin complet avec les ../../ à la con, sinon "module not found" avec le chemin absolue.
   //Je ne sais pas si il vaut mieux placer les fonts dans public ou dans src.
   display: "swap",
-  variable: "--font-local",
+  variable: "--font-title-local",
+});
+const categoryFont = localFont({
+  src: "../../public/fonts/Boogaloo-Regular.ttf",
+  //Je ne sais pas pourquoi, mais je suis obligé de mettre le chemin complet avec les ../../ à la con, sinon "module not found" avec le chemin absolue.
+  //Je ne sais pas si il vaut mieux placer les fonts dans public ou dans src.
+  display: "swap",
+  variable: "--font-category-local",
 });
 
 export const metadata = {
@@ -18,7 +30,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={titleFont.variable}>
+    <html
+      lang="en"
+      className={`${titleFont.variable} ${categoryFont.variable}`}
+    >
       <body className={inter.className}>{children}</body>
     </html>
   );
