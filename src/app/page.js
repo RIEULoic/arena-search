@@ -9,7 +9,7 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 export default async function Home() {
   const arenaGameData = JSON.parse(
     await fs.readFile(
-      // J'utilise process.cwd() pour obtenir le chemin absolu du répertoire racine du projet, comme indiqué dans la doc de vercel
+      //  J'utilise process.cwd() pour obtenir le chemin absolu du répertoire racine du projet, comme indiqué dans la doc de vercel
       process.cwd() + "/src/app/data/arena-games-data.json",
       "utf8"
     )
