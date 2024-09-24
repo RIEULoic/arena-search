@@ -36,15 +36,11 @@ export default async function Home() {
     return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
   }
 
-  // const startColor = "#ff0000"; // rouge
-  // const endColor = "#0000ff"; // bleu
-  // const value ={game.geekComplexity};
-  // const max = 5;
   return (
     <div className="p-5 grid lg:grid-cols-5  md:grid-cols-3 sm:grid-cols-2 ">
       {arenaGameData.map((game) => {
-        const startColor = "#0000ff"; // bleu
-        const endColor = "#ff0000"; // rouge
+        const startColor = "#0491d7"; // bleu
+        const endColor = "#d70404"; // rouge
         return (
           <div key={game.geekId} className="p-4 mb-4 ">
             <div className="flex flex-col group border-2 border-amber-600 h-full pt-6 rounded-xl bg-gradient-to-r from-yellow-300 to-stone-200  shadow-lg hover:shadow-lg hover:shadow-amber-800 hover:scale-110 transition-all duration-200 ease-in-out">
@@ -79,9 +75,11 @@ export default async function Home() {
                 <div className="flex flex-col">
                   <FontAwesomeIcon icon={faUsers} size="2x" className="mb-1" />
                   {game.minPlayers === game.maxPlayers ? (
-                    <div className="flex justify-center">{game.minPlayers}</div>
+                    <div className="flex justify-center text-xl ">
+                      {game.minPlayers}
+                    </div>
                   ) : (
-                    <div className="flex justify-center">{`${game.minPlayers} - ${game.maxPlayers}`}</div>
+                    <div className="flex justify-center text-xl">{`${game.minPlayers} - ${game.maxPlayers}`}</div>
                   )}
                 </div>
                 <button className="text-xl text-gray-700 bg-gradient-to-r from-slate-400 to-stone-200 hover:scale-110 transition-all duration-200 ease-in-out drop-shadow-xl px-4 py-1 rounded-xl border-2 border-blue-400">
@@ -92,9 +90,9 @@ export default async function Home() {
 
                   {/*Interpolation de la couleur en fonction de la complexité du jeu */}
                   <div
-                    className="flex justify-center"
+                    className="flex justify-center font-black text-xl"
                     style={{
-                      backgroundColor: interpolateColor(
+                      color: interpolateColor(
                         startColor,
                         endColor,
                         Math.round(game.geekComplexity * 100) / 100,
