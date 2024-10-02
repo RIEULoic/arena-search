@@ -51,11 +51,16 @@ export default function Home() {
             const endColor = "#d70404"; // rouge
             return (
               <div key={game.geekId} className="p-4 mb-4 ">
-                <Tilt className="h-full">
-                  <div className="flex flex-col group border-2 border-amber-600 h-full pt-6 rounded-xl bg-gradient-to-r from-yellow-300 to-stone-200  shadow-lg hover:shadow-lg hover:shadow-amber-800 hover:scale-110 transition-all duration-200 ease-in-out ">
+                <Tilt
+                  className="h-full"
+                  tiltAxis="y"
+                  scale={1.1}
+                  transitionSpeed={2500}
+                >
+                  <div className="flex flex-col group border-2 border-amber-600 h-full pt-6 rounded-xl bg-gradient-to-r from-yellow-300 to-stone-200  shadow-lg hover:shadow-lg hover:shadow-amber-800  ">
                     <div className="overflow-hidden   bg-gradient-to-r  from-yellow-100 to-stone-300">
                       <Image
-                        className="py-2 rounded-2xl lg:h-48 md:h-36 w-full object-contain object-center scale-125 transition-all duration-300 ease-in-out group-hover:scale-100"
+                        className="py-2 rounded-2xl lg:h-48 md:h-36 w-full object-contain object-center scale-125 transition-all duration-500 ease-in-out group-hover:scale-100 hover:cursor-pointer"
                         src={game.image}
                         alt={game.name}
                         width={200}
