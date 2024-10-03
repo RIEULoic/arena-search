@@ -6,6 +6,7 @@ import Tilt from "react-parallax-tilt";
 import { useEffect, useState } from "react";
 
 import Image from "next/image";
+import Link from "next/link";
 
 //font awesome du cul
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -57,15 +58,22 @@ export default function Home() {
                   scale={1.1}
                   transitionSpeed={2500}
                 >
-                  <div className="flex flex-col group border-2 border-amber-600 h-full pt-6 rounded-xl bg-gradient-to-r from-yellow-300 to-stone-200  shadow-lg hover:shadow-lg hover:shadow-amber-800  ">
+                  <div className="flex flex-col group border-2 border-amber-600 h-full  rounded-xl bg-gradient-to-r from-yellow-300 to-stone-200  shadow-lg hover:shadow-lg hover:shadow-amber-800 hover:border-amber-800 ">
+                    <div>
+                      <h1 className="text-end pr-2 py-2">
+                        {Math.round(game.geekAverage * 100) / 100}
+                      </h1>
+                    </div>
                     <div className="overflow-hidden   bg-gradient-to-r  from-yellow-100 to-stone-300">
-                      <Image
-                        className="py-2 rounded-2xl lg:h-48 md:h-36 w-full object-contain object-center scale-125 transition-all duration-500 ease-in-out group-hover:scale-100 hover:cursor-pointer"
-                        src={game.image}
-                        alt={game.name}
-                        width={200}
-                        height={200}
-                      />
+                      <Link href={`/games/${game.geekId}`}>
+                        <Image
+                          className="py-2 rounded-2xl lg:h-48 md:h-36 w-full object-contain object-center scale-125 transition-all duration-500 ease-in-out group-hover:scale-100 hover:cursor-pointer"
+                          src={game.image}
+                          alt={game.name}
+                          width={200}
+                          height={200}
+                        />
+                      </Link>
                     </div>
                     <div className="p-6 flex-grow">
                       <h2 className="tracking-widest text-xs font-medium text-gray-500 mb-1">
@@ -100,9 +108,11 @@ export default function Home() {
                           <div className="flex justify-center text-xl">{`${game.minPlayers} - ${game.maxPlayers}`}</div>
                         )}
                       </div>
-                      <button className="text-xl text-gray-700 bg-gradient-to-r from-slate-400 to-stone-200 hover:scale-110 transition-all duration-200 ease-in-out drop-shadow-xl px-4 py-1 rounded-xl border-2 border-blue-400">
-                        Learn more
-                      </button>
+                      <Link href={`/games/${game.geekId}`}>
+                        <button className="text-xl text-gray-700 bg-gradient-to-r from-slate-400 to-stone-200 hover:scale-110 transition-all duration-200 ease-in-out drop-shadow-xl px-4 py-1 rounded-xl border-2 border-blue-400">
+                          Learn more
+                        </button>
+                      </Link>
                       <div className="flex flex-col">
                         <FontAwesomeIcon
                           icon={faGear}
@@ -112,7 +122,7 @@ export default function Home() {
 
                         {/*Interpolation de la couleur en fonction de la complexité du jeu */}
                         <div
-                          className="flex justify-center font-black text-xl"
+                          className="flex justify-center font-black text-xl "
                           style={{
                             color: interpolateColor(
                               startColor,
@@ -121,6 +131,9 @@ export default function Home() {
                               //Petite formule pour arrondir à 2 chiffres après la virgule
                               5
                             ),
+                            filter: "contrast(300%)",
+                            //avec React, lorsque tu utilises un inline style, tu dois mettre les valeurs en string
+                            filter: "brightness(1.5)",
                           }}
                         >
                           {Math.round(game.geekComplexity * 100) / 100}
