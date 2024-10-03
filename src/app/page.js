@@ -1,7 +1,7 @@
 "use client";
 
 import { createArenaGamesData } from "./actions";
-//obligé d'importer createArenaGamesData ici, car je ne peux pas utiliser "use server" inline dans le body de la fonction. Enfin, selon la doc de nextjs, je peux, mais ça ne fonctionne pas.Où j'ai pas compris.
+// obligé d'importer createArenaGamesData ici, car je ne peux pas utiliser "use server" inline dans le body de la fonction. Enfin, selon la doc de nextjs, je peux, mais ça ne fonctionne pas.Où j'ai pas compris.
 import Tilt from "react-parallax-tilt";
 import { useEffect, useState } from "react";
 
