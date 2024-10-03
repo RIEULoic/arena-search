@@ -17,9 +17,17 @@ export default function Home() {
   const [arenaGamesData, setArenaGamesData] = useState([]);
 
   useEffect(() => {
-    createArenaGamesData().then((data) => {
-      setArenaGamesData(data);
-    });
+    createArenaGamesData()
+      .then((data) => {
+        if (data && Array.isArray(data)) {
+          setArenaGamesData(data);
+        } else {
+          console.error("Data format is incorrect or undefined");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching arena games data:", error);
+      });
   }, []);
 
   //interpolation
