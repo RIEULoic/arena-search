@@ -10,6 +10,8 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { faPuzzlePiece } from "@fortawesome/free-solid-svg-icons";
+import { faPalette } from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
   const [arenaGamesData, setArenaGamesData] = useState([]);
@@ -63,7 +65,57 @@ export default function Home() {
                   transitionSpeed={2500}
                 >
                   <div className="flex flex-col group border-2 border-amber-600 h-full  rounded-xl bg-gradient-to-r from-yellow-300 to-stone-200  shadow-lg hover:shadow-lg hover:shadow-amber-800 hover:border-amber-800 ">
-                    <div>
+                    <div className="flex flex-row justify-between">
+                      <div className="flex flex-col m-3">
+                        <div className="flex flex-row mb-5 items-center">
+                          <div className="flex items-center">
+                            <FontAwesomeIcon icon={faPuzzlePiece} size="2x" />
+                          </div>
+                          <ul>
+                            {game.designersLinks.length > 0 ? (
+                              game.designersLinks.map((designer) => (
+                                <li
+                                  key={game.geekId + designer.id}
+                                  className="text-xl text-gray-500 ml-2"
+                                >
+                                  {designer.value}
+                                </li>
+                              ))
+                            ) : (
+                              <li
+                                key={game.geekId + "noDesigner"}
+                                className="text-xl text-gray-500 ml-2"
+                              >
+                                {"(Uncredited)"}
+                              </li>
+                            )}
+                          </ul>
+                        </div>
+                        <div className="flex flex-row items-center mb-2">
+                          <div className="flex items-center">
+                            <FontAwesomeIcon icon={faPalette} size="2x" />
+                            <ul>
+                              {game.artistsLinks.length > 0 ? (
+                                game.artistsLinks.map((artist) => (
+                                  <li
+                                    key={game.geekId + artist.id}
+                                    className="text-xl text-gray-500 ml-2"
+                                  >
+                                    {artist.value}
+                                  </li>
+                                ))
+                              ) : (
+                                <li
+                                  key={game.geekId + "noArtist"}
+                                  className="text-xl text-gray-500 ml-2"
+                                >
+                                  {"(Uncredited)"}
+                                </li>
+                              )}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
                       <h1 className="text-end pr-2 py-2">
                         {Math.round(game.geekAverage * 100) / 100}
                       </h1>
