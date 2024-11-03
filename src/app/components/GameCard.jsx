@@ -1,8 +1,11 @@
+"use client";
+
 import { useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
 import Tilt from "react-parallax-tilt";
+//import blob from "/images/blob.svg";
 
 //font awesome du cul
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -49,7 +52,7 @@ export default function GameCard({ game }) {
   return (
     <div key={game.geekId} className="p-4 mb-4 ">
       <Tilt className="h-full" tiltAxis="y" scale={1.1} transitionSpeed={2500}>
-        <div className="flex flex-col group border-2 border-amber-600 h-full  rounded-xl bg-gradient-to-r from-yellow-300 to-stone-200  shadow-lg hover:shadow-lg hover:shadow-amber-800 hover:border-amber-800 ">
+        <div className="flex flex-col group border-2 border-amber-600 h-full mb-0 rounded-xl bg-gradient-to-r from-yellow-300 to-stone-200  shadow-lg hover:shadow-lg hover:shadow-amber-800 hover:border-amber-800 ">
           <div className="flex flex-row justify-between">
             <div className="flex flex-col m-3">
               <div className="flex flex-row mb-5 items-center">
@@ -60,7 +63,7 @@ export default function GameCard({ game }) {
                   {game.designersLinks.length === 0 ? (
                     <>
                       <li
-                        key={game.geekId + "noDesigner"}
+                        key={`${game.geekId} + noDesigner + ${game.name}`}
                         className="text-xl text-gray-500 ml-2"
                       >
                         (Uncredited)
@@ -70,7 +73,7 @@ export default function GameCard({ game }) {
                     <>
                       {game.designersLinks.slice(0, 2).map((designer) => (
                         <li
-                          key={game.geekId + designer.id}
+                          key={`${game.geekId} + ${designer.id} + ${game.name}`}
                           className="text-xl text-gray-500 ml-2"
                         >
                           {designer.value}
@@ -87,7 +90,7 @@ export default function GameCard({ game }) {
                     <>
                       {game.designersLinks.map((designer) => (
                         <li
-                          key={game.geekId + designer.id}
+                          key={`${game.geekId} + ${designer.id} + ${game.name}`}
                           className="text-xl text-gray-500 ml-2"
                         >
                           {designer.value}
@@ -109,30 +112,11 @@ export default function GameCard({ game }) {
               <div className="flex flex-row items-center mb-2">
                 <div className="flex items-center">
                   <FontAwesomeIcon icon={faPalette} size="2x" />
-                  {/* <ul>
-                    {game.artistsLinks.length > 0 ? (
-                      game.artistsLinks.map((artist) => (
-                        <li
-                          key={game.geekId + artist.id}
-                          className="text-xl text-gray-500 ml-2"
-                        >
-                          {artist.value}
-                        </li>
-                      ))
-                    ) : (
-                      <li
-                        key={game.geekId + "noArtist"}
-                        className="text-xl text-gray-500 ml-2"
-                      >
-                        {"(Uncredited)"}
-                      </li>
-                    )}
-                  </ul> */}
                   <ul>
                     {game.artistsLinks.length === 0 ? (
                       <>
                         <li
-                          key={game.geekId + "noArtist"}
+                          key={`${game.geekId} + noArtist + ${game.name}`}
                           className="text-xl text-gray-500 ml-2"
                         >
                           (Uncredited)
@@ -142,7 +126,7 @@ export default function GameCard({ game }) {
                       <>
                         {game.artistsLinks.slice(0, 2).map((artist) => (
                           <li
-                            key={game.geekId + artist.id}
+                            key={`${game.geekId} + ${artist.id} + ${game.name}`}
                             className="text-xl text-gray-500 ml-2"
                           >
                             {artist.value}
@@ -159,7 +143,7 @@ export default function GameCard({ game }) {
                       <>
                         {game.artistsLinks.map((artist) => (
                           <li
-                            key={game.geekId + artist.id}
+                            key={`${game.geekId} + ${artist.id} + ${game.name}`}
                             className="text-xl text-gray-500 ml-2"
                           >
                             {artist.value}
@@ -179,19 +163,40 @@ export default function GameCard({ game }) {
                 </div>
               </div>
             </div>
-            <h1 className="text-end pr-2 py-2">
-              {Math.round(game.geekAverage * 100) / 100}
-            </h1>
+            <div className="relative pr-2 py-2 w-[112px] h-[112px] ">
+              <Image
+                className="absolute top-0 "
+                src="/images/blob.svg"
+                alt="blob"
+                fill
+                style={{
+                  objectFit: "cover",
+                }}
+              />
+              <h1 className="absolute top-0 pt-11 pl-11">
+                {Math.round(game.geekAverage * 100) / 100}
+              </h1>
+            </div>
           </div>
           <div className="overflow-hidden   bg-gradient-to-r  from-yellow-100 to-stone-300">
             <Link href={`/games/${game.geekId}`}>
-              <Image
-                className="py-2 rounded-2xl lg:h-48 md:h-36 w-full object-contain object-center scale-125 transition-all duration-500 ease-in-out group-hover:scale-100 hover:cursor-pointer"
-                src={game.image}
-                alt={game.name}
-                width={200}
-                height={200}
-              />
+              {game.image !== undefined ? (
+                <Image
+                  className="py-2 rounded-2xl lg:h-48 md:h-36 w-full object-contain object-center scale-125 transition-all duration-500 ease-in-out group-hover:scale-100 hover:cursor-pointer"
+                  src={game.image}
+                  alt={game.name}
+                  width={200}
+                  height={200}
+                />
+              ) : (
+                <Image
+                  className="py-2 rounded-2xl lg:h-48 md:h-36 w-full object-contain object-center scale-125 transition-all duration-500 ease-in-out group-hover:scale-100 hover:cursor-pointer"
+                  src="/images/lolotest.jpg"
+                  alt="Inconnue"
+                  width={200}
+                  height={200}
+                />
+              )}
             </Link>
           </div>
           <div className="p-6 flex-grow">
@@ -204,7 +209,7 @@ export default function GameCard({ game }) {
             <ul className="mt-6">
               {game.gameCategoryLinks.map((category) => (
                 <li
-                  key={game.geekId + category.id}
+                  key={`${game.geekId} + ${category.id} + ${game.name}`}
                   className="font-category text-center text-2xl text-gray-500"
                 >
                   {category.value}

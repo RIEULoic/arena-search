@@ -22,9 +22,9 @@ export default function Home() {
   return (
     <div>
       {arenaGamesData.length > 0 ? (
-        <div className="p-5 grid lg:grid-cols-5  md:grid-cols-3 sm:grid-cols-2 ">
+        <div className="p-5 grid lg:grid-cols-5  md:grid-cols-3 sm:grid-cols-2  gap-y-5">
           {arenaGamesData.map((game) => (
-            <GameCard key={game.geekID} game={game} />
+            <GameCard key={`${game.geekId} + ${game.name}`} game={game} />
           ))}
         </div>
       ) : (
