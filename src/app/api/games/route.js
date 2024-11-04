@@ -7,7 +7,8 @@ export async function GET() {
     // Construire le chemin du fichier JSON
     const filePath = path.join(
       process.cwd(),
-      "src/app/data/arena-games-data.json"
+      "src/app/data/arena-games-data-sample.json"
+      //ATTENTION, IL S'AGIT D'UN SAMPLE DE DONNÉES. NE PAS OUBLIER DE REMPLACER PAR LE VRAI FICHIER DE DONNÉES
     );
     const fileContent = await fs.readFile(filePath, "utf8");
 

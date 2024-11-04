@@ -15,6 +15,8 @@ import { faPuzzlePiece } from "@fortawesome/free-solid-svg-icons";
 import { faPalette } from "@fortawesome/free-solid-svg-icons";
 
 export default function GameCard({ game }) {
+  const lcpImageUrl =
+    "https://cf.geekdo-images.com/vU4g_GoMeBG4Ra9guyvpHw__original/img/3ykp4yw4eMXRngew0UzHHJBjW_I=/0x0/filters:format(png)/pic7259827.png";
   const startColor = "#0491d7"; // bleu
   const endColor = "#d70404"; // rouge
   const [showAllDesigners, setShowAllDesigners] = useState(false);
@@ -173,7 +175,7 @@ export default function GameCard({ game }) {
                   objectFit: "cover",
                 }}
               />
-              <h1 className="absolute top-0 pt-11 pl-11">
+              <h1 className="absolute inset-0 flex items-center justify-center text-xl font-bold">
                 {Math.round(game.geekAverage * 100) / 100}
               </h1>
             </div>
@@ -187,12 +189,14 @@ export default function GameCard({ game }) {
                   alt={game.name}
                   width={200}
                   height={200}
+                  priority={game.image === lcpImageUrl}
+                  //Si l'image est celle de LCP, alors priority= true. Sinon, priority= false. C'est nextjs qui me demande de faire ça pour optimiser le chargement. En effet, cette image apparait tout en haut de la page.
                 />
               ) : (
                 <Image
                   className="py-2 rounded-2xl lg:h-48 md:h-36 w-full object-contain object-center scale-125 transition-all duration-500 ease-in-out group-hover:scale-100 hover:cursor-pointer"
-                  src="/images/lolotest.jpg"
-                  alt="Inconnue"
+                  src="/images/image-not-found.png"
+                  alt="Image not found"
                   width={200}
                   height={200}
                 />
@@ -200,8 +204,8 @@ export default function GameCard({ game }) {
             </Link>
           </div>
           <div className="p-6 flex-grow">
-            <h2 className="tracking-widest text-xs font-medium text-gray-500 mb-1">
-              Année?
+            <h2 className="tracking-widest text-sm font-medium text-gray-500 mb-1">
+              {game.yearPublished}
             </h2>
             <h1 className="font-title text-3xl  text-center font-medium text-zinc-700 mb-3">
               {game.name}
