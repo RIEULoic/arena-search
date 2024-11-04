@@ -8,7 +8,7 @@ export default function Home() {
   const [arenaGamesData, setArenaGamesData] = useState([]);
 
   useEffect(() => {
-    // Appeler l'API route pour récupérer les données JSON
+    // Appeler l'API route pour récupérer les données JSON.
     fetch("/api/games")
       .then((res) => res.json())
       .then((data) => {
