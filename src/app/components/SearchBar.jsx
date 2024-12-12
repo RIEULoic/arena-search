@@ -12,6 +12,11 @@ export default function SearchBar({ onSearch }) {
         type="text"
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSearch();
+          }
+        }}
         className="border-2 border-gray-300 bg-white h-10 w-96 px-5 pr-16 rounded-lg text-sm focus:scale-110 focus:outline-none duration-300"
         placeholder="Search a game, a designer, or an artist"
       />
