@@ -23,64 +23,64 @@ export default function Home() {
       });
   }, []);
 
-  // const handleSearch = (searchValue) => {
-  //   setLoading(true);
-  //   if (searchValue === "") {
-  //     setFilteredGames(arenaGamesData);
-  //   } else {
-  //     const filtered = arenaGamesData.filter((game) => {
-  //       const nameMatch = game.name
-  //         .toLowerCase()
-  //         .includes(searchValue.toLowerCase());
-  //       const artistMatch =
-  //         game.artistsLinks &&
-  //         game.artistsLinks.some((artist) =>
-  //           artist.value.toLowerCase().includes(searchValue.toLowerCase())
-  //         );
+  const handleSearch = (searchValue) => {
+    setLoading(true);
+    if (searchValue === "") {
+      setFilteredGames(arenaGamesData);
+    } else {
+      const filtered = arenaGamesData.filter((game) => {
+        const nameMatch = game.name
+          .toLowerCase()
+          .includes(searchValue.toLowerCase());
+        const artistMatch =
+          game.artistsLinks &&
+          game.artistsLinks.some((artist) =>
+            artist.value.toLowerCase().includes(searchValue.toLowerCase())
+          );
 
-  //       const designerMatch =
-  //         game.designersLinks &&
-  //         game.designersLinks.some((designer) =>
-  //           designer.value.toLowerCase().includes(searchValue.toLowerCase())
-  //         );
+        const designerMatch =
+          game.designersLinks &&
+          game.designersLinks.some((designer) =>
+            designer.value.toLowerCase().includes(searchValue.toLowerCase())
+          );
 
-  //       return nameMatch || artistMatch || designerMatch;
-  //     });
-  //     setFilteredGames(filtered);
-  //     setLoading(false);
-  //   }
-  // };
+        return nameMatch || artistMatch || designerMatch;
+      });
+      setFilteredGames(filtered);
+      setLoading(false);
+    }
+  };
 
   //j'ai rajouté un setTimeout pour simuler un délai de chargement sinon les useStates ne sont pas mis à jour correctement j'ai l'impression.
   //Ce n'est pas du tout une bonne pratique en PROD, mais je n'ai pas trouvé d'autres solutions pour le moment.
-  const handleSearch = (searchValue) => {
-    setLoading(true);
-    setTimeout(() => {
-      if (searchValue === "") {
-        setFilteredGames(arenaGamesData);
-      } else {
-        const filtered = arenaGamesData.filter((game) => {
-          const nameMatch = game.name
-            .toLowerCase()
-            .includes(searchValue.toLowerCase());
-          const artistMatch =
-            game.artistsLinks &&
-            game.artistsLinks.some((artist) =>
-              artist.value.toLowerCase().includes(searchValue.toLowerCase())
-            );
-          const designerMatch =
-            game.designersLinks &&
-            game.designersLinks.some((designer) =>
-              designer.value.toLowerCase().includes(searchValue.toLowerCase())
-            );
+  // const handleSearch = (searchValue) => {
+  //   setLoading(true);
+  //   setTimeout(() => {
+  //     if (searchValue === "") {
+  //       setFilteredGames(arenaGamesData);
+  //     } else {
+  //       const filtered = arenaGamesData.filter((game) => {
+  //         const nameMatch = game.name
+  //           .toLowerCase()
+  //           .includes(searchValue.toLowerCase());
+  //         const artistMatch =
+  //           game.artistsLinks &&
+  //           game.artistsLinks.some((artist) =>
+  //             artist.value.toLowerCase().includes(searchValue.toLowerCase())
+  //           );
+  //         const designerMatch =
+  //           game.designersLinks &&
+  //           game.designersLinks.some((designer) =>
+  //             designer.value.toLowerCase().includes(searchValue.toLowerCase())
+  //           );
 
-          return nameMatch || artistMatch || designerMatch;
-        });
-        setFilteredGames(filtered);
-      }
-      setLoading(false);
-    }, 100); // Simule un délai pour afficher le "loading"
-  };
+  //         return nameMatch || artistMatch || designerMatch;
+  //       });
+  //       setFilteredGames(filtered);
+  //     }
+  //     setLoading(false);
+  //   }, 100); // Simule un délai pour afficher le "loading"
+  // };
 
   return (
     <div>
