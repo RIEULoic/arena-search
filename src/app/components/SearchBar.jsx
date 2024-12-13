@@ -1,14 +1,14 @@
 import { useState } from "react";
 
-export default function SearchBar({ onSearch }) {
+export default function SearchBar({ onSearch, loading }) {
   const [searchValue, setSearchValue] = useState("");
 
   const handleSearch = () => {
     onSearch(searchValue);
   };
   return (
-    <div className="flex w-full fixed bg-gray-300 h-96 z-50">
-      <div className="flex justify-center p-5">
+    <div className=" w-full fixed bg-gray-300 h-96 z-50">
+      <div className="flex  p-5">
         <input
           type="text"
           value={searchValue}
@@ -36,6 +36,13 @@ export default function SearchBar({ onSearch }) {
           </svg>
         </button>
       </div>
+      {loading ? (
+        <div className="animate-spin h-12 w-12 ml-6 mt-6 border-y-4 rounded-full border-blue-300">
+          true
+        </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 }

@@ -8,6 +8,7 @@ import SearchBar from "./components/SearchBar";
 export default function Home() {
   const [arenaGamesData, setArenaGamesData] = useState([]);
   const [filteredGames, setFilteredGames] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Appeler l'API route pour récupérer les données JSON.
@@ -22,35 +23,68 @@ export default function Home() {
       });
   }, []);
 
+  // const handleSearch = (searchValue) => {
+  //   setLoading(true);
+  //   if (searchValue === "") {
+  //     setFilteredGames(arenaGamesData);
+  //   } else {
+  //     const filtered = arenaGamesData.filter((game) => {
+  //       const nameMatch = game.name
+  //         .toLowerCase()
+  //         .includes(searchValue.toLowerCase());
+  //       const artistMatch =
+  //         game.artistsLinks &&
+  //         game.artistsLinks.some((artist) =>
+  //           artist.value.toLowerCase().includes(searchValue.toLowerCase())
+  //         );
+
+  //       const designerMatch =
+  //         game.designersLinks &&
+  //         game.designersLinks.some((designer) =>
+  //           designer.value.toLowerCase().includes(searchValue.toLowerCase())
+  //         );
+
+  //       return nameMatch || artistMatch || designerMatch;
+  //     });
+  //     setFilteredGames(filtered);
+  //     setLoading(false);
+  //   }
+  // };
+
+  //j'ai rajouté un setTimeout pour simuler un délai de chargement sinon les useStates ne sont pas mis à jour correctement j'ai l'impression.
+  //Ce n'est pas du tout une bonne pratique en PROD, mais je n'ai pas trouvé d'autres solutions pour le moment.
   const handleSearch = (searchValue) => {
-    if (searchValue === "") {
-      setFilteredGames(arenaGamesData);
-    } else {
-      const filtered = arenaGamesData.filter((game) => {
-        const nameMatch = game.name
-          .toLowerCase()
-          .includes(searchValue.toLowerCase());
-        const artistMatch =
-          game.artistsLinks &&
-          game.artistsLinks.some((artist) =>
-            artist.value.toLowerCase().includes(searchValue.toLowerCase())
-          );
+    setLoading(true);
+    setTimeout(() => {
+      if (searchValue === "") {
+        setFilteredGames(arenaGamesData);
+      } else {
+        const filtered = arenaGamesData.filter((game) => {
+          const nameMatch = game.name
+            .toLowerCase()
+            .includes(searchValue.toLowerCase());
+          const artistMatch =
+            game.artistsLinks &&
+            game.artistsLinks.some((artist) =>
+              artist.value.toLowerCase().includes(searchValue.toLowerCase())
+            );
+          const designerMatch =
+            game.designersLinks &&
+            game.designersLinks.some((designer) =>
+              designer.value.toLowerCase().includes(searchValue.toLowerCase())
+            );
 
-        const designerMatch =
-          game.designersLinks &&
-          game.designersLinks.some((designer) =>
-            designer.value.toLowerCase().includes(searchValue.toLowerCase())
-          );
-
-        return nameMatch || artistMatch || designerMatch;
-      });
-      setFilteredGames(filtered);
-    }
+          return nameMatch || artistMatch || designerMatch;
+        });
+        setFilteredGames(filtered);
+      }
+      setLoading(false);
+    }, 100); // Simule un délai pour afficher le "loading"
   };
 
   return (
     <div>
-      <SearchBar onSearch={handleSearch} />
+      <SearchBar onSearch={handleSearch} loading={loading} />
       {filteredGames.length > 0 ? (
         <div className=" pt-96 px-4 grid lg:grid-cols-5  md:grid-cols-3 sm:grid-cols-2  gap-y-5">
           {filteredGames.map((game) => (
@@ -58,7 +92,9 @@ export default function Home() {
           ))}
         </div>
       ) : (
-        <div className="h-screen">Loading</div>
+        <div className="flex justify-center items-center  h-screen pt-96 animate-pulse text-8xl text-orange-950 font-bold ">
+          Loading...
+        </div>
       )}
     </div>
   );
