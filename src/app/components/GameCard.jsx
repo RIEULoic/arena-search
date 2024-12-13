@@ -52,7 +52,7 @@ export default function GameCard({ game }) {
   };
 
   return (
-    <div key={game.geekId} className="p-4 mb-4 ">
+    <div key={game.geekId} className="p-4 mt-10 ">
       <Tilt className="h-full" tiltAxis="y" scale={1.1} transitionSpeed={2500}>
         <div className="flex flex-col group border-2 border-amber-600 h-full mb-0 rounded-xl bg-gradient-to-r from-yellow-300 to-stone-200  shadow-lg hover:shadow-lg hover:shadow-amber-800 hover:border-amber-800 ">
           <div className="flex flex-row justify-between">
