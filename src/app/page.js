@@ -9,6 +9,7 @@ export default function Home() {
   const [arenaGamesData, setArenaGamesData] = useState([]);
   const [filteredGames, setFilteredGames] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isAlphaBoxChecked, setIsAlphaBoxChecked] = useState(true);
 
   useEffect(() => {
     // Appeler l'API route pour récupérer les données JSON.
@@ -29,10 +30,11 @@ export default function Home() {
   const handleSearch = (searchValue) => {
     setLoading(true);
     setTimeout(() => {
+      let filtered;
       if (searchValue === "") {
-        setFilteredGames(arenaGamesData);
+        filtered = arenaGamesData; // Si la recherche est vide, on affiche tous les jeux
       } else {
-        const filtered = arenaGamesData.filter((game) => {
+        filtered = arenaGamesData.filter((game) => {
           const nameMatch = game.name
             .toLowerCase()
             .includes(searchValue.toLowerCase());
@@ -49,29 +51,53 @@ export default function Home() {
 
           return nameMatch || artistMatch || designerMatch;
         });
-        setFilteredGames(filtered);
       }
+      sortBy(isAlphaBoxChecked, filtered);
       setLoading(false);
-    }, 100); // Simule un délai pour afficher le "loading"
+    }, 0); // Simule un délai pour afficher le "loading"
   };
 
-  const sortBy = (isAlphaBoxChecked) => {
+  // const sortBy = (isAlphaBoxChecked) => {
+  //   setLoading(true);
+  //   //Pareil, j'ai rajouté un setTimeout pour simuler un délai de chargement sinon les useStates ne sont pas mis à jour correctement j'ai l'impression.
+  //   setTimeout(() => {
+  //     isAlphaBoxChecked
+  //       ? setFilteredGames((prev) =>
+  //           [...prev].sort((a, b) => a.name.localeCompare(b.name))
+  //         )
+  //       : setFilteredGames((prev) =>
+  //           [...prev].sort((a, b) => b.geekAverage - a.geekAverage)
+  //         );
+  //     setLoading(false);
+  //   }, 0);
+  // };
+
+  const sortBy = (isAlpha, games = filteredGames) => {
     setLoading(true);
     setTimeout(() => {
-      isAlphaBoxChecked
-        ? setFilteredGames((prev) =>
-            [...prev].sort((a, b) => a.name.localeCompare(b.name))
-          )
-        : setFilteredGames((prev) =>
-            [...prev].sort((a, b) => b.geekAverage - a.geekAverage)
-          );
+      const sortedGames = [...games].sort(
+        (a, b) =>
+          isAlpha
+            ? a.name.localeCompare(b.name) // Tri alphabétique
+            : b.geekAverage - a.geekAverage // Tri par rank décroissant
+      );
+      setFilteredGames(sortedGames);
       setLoading(false);
     }, 0);
   };
 
   return (
     <div>
-      <SearchBar onSearch={handleSearch} loading={loading} sortBy={sortBy} />
+      <SearchBar
+        onSearch={handleSearch}
+        loading={loading}
+        sortBy={() => {
+          const newAlphaChecked = !isAlphaBoxChecked;
+          setIsAlphaBoxChecked(newAlphaChecked);
+          sortBy(newAlphaChecked);
+        }}
+        isAlphaBoxChecked={isAlphaBoxChecked}
+      />
       {filteredGames.length > 0 ? (
         <div className=" pt-96 px-4 grid lg:grid-cols-5  md:grid-cols-3 sm:grid-cols-2  gap-y-5">
           {filteredGames.map((game) => (

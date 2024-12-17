@@ -8,7 +8,7 @@ export default function SearchBar({ onSearch, loading, sortBy }) {
     onSearch(searchValue);
   };
 
-  const toggleOrderMethod = () => {
+  const toggleSortOrder = () => {
     const updateAlphaChecked = !isAlphaBoxChecked; // On force le recalcul de la valeur de la checkbox pour etre sur que sortBy soit appelé avec la bonne valeur. Sinon ,on risque de se retrouver avec un état décalé à cause de l'asynchronisme de setState.
     setIsAlphaBoxChecked(updateAlphaChecked);
     sortBy(updateAlphaChecked);
@@ -49,7 +49,7 @@ export default function SearchBar({ onSearch, loading, sortBy }) {
           <input
             type="checkbox"
             checked={isAlphaBoxChecked}
-            onChange={toggleOrderMethod}
+            onChange={toggleSortOrder}
           />
           Listed by alphabetical order
         </label>
@@ -57,7 +57,7 @@ export default function SearchBar({ onSearch, loading, sortBy }) {
           <input
             type="checkbox"
             checked={!isAlphaBoxChecked}
-            onChange={toggleOrderMethod}
+            onChange={toggleSortOrder}
           />
           Listed by rank
         </label>
