@@ -8,7 +8,7 @@ import SearchBar from "./components/SearchBar";
 export default function Home() {
   const [arenaGamesData, setArenaGamesData] = useState([]);
   const [filteredGames, setFilteredGames] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Appeler l'API route pour récupérer les données JSON.
@@ -17,39 +17,12 @@ export default function Home() {
       .then((data) => {
         setArenaGamesData(data);
         setFilteredGames(data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Erreur lors de la récupération des données:", error);
       });
   }, []);
-
-  // const handleSearch = (searchValue) => {
-  //   setLoading(true);
-  //   if (searchValue === "") {
-  //     setFilteredGames(arenaGamesData);
-  //   } else {
-  //     const filtered = arenaGamesData.filter((game) => {
-  //       const nameMatch = game.name
-  //         .toLowerCase()
-  //         .includes(searchValue.toLowerCase());
-  //       const artistMatch =
-  //         game.artistsLinks &&
-  //         game.artistsLinks.some((artist) =>
-  //           artist.value.toLowerCase().includes(searchValue.toLowerCase())
-  //         );
-
-  //       const designerMatch =
-  //         game.designersLinks &&
-  //         game.designersLinks.some((designer) =>
-  //           designer.value.toLowerCase().includes(searchValue.toLowerCase())
-  //         );
-
-  //       return nameMatch || artistMatch || designerMatch;
-  //     });
-  //     setFilteredGames(filtered);
-  //     setLoading(false);
-  //   }
-  // };
 
   //j'ai rajouté un setTimeout pour simuler un délai de chargement sinon les useStates ne sont pas mis à jour correctement j'ai l'impression.
   //Ce n'est pas du tout une bonne pratique en PROD, mais je n'ai pas trouvé d'autres solutions pour le moment.
@@ -82,18 +55,32 @@ export default function Home() {
     }, 100); // Simule un délai pour afficher le "loading"
   };
 
+  const sortBy = (isAlphaBoxChecked) => {
+    setLoading(true);
+    setTimeout(() => {
+      isAlphaBoxChecked
+        ? setFilteredGames((prev) =>
+            [...prev].sort((a, b) => a.name.localeCompare(b.name))
+          )
+        : setFilteredGames((prev) =>
+            [...prev].sort((a, b) => b.geekAverage - a.geekAverage)
+          );
+      setLoading(false);
+    }, 0);
+  };
+
   return (
     <div>
-      <SearchBar onSearch={handleSearch} loading={loading} />
+      <SearchBar onSearch={handleSearch} loading={loading} sortBy={sortBy} />
       {filteredGames.length > 0 ? (
         <div className=" pt-96 px-4 grid lg:grid-cols-5  md:grid-cols-3 sm:grid-cols-2  gap-y-5">
           {filteredGames.map((game) => (
-            <GameCard key={`${game.geekId} + ${game.name}`} game={game} />
+            <GameCard key={game.geekId} game={game} />
           ))}
         </div>
       ) : (
         <div className="flex justify-center items-center  h-screen pt-96 animate-pulse text-8xl text-orange-950 font-bold ">
-          Loading...
+          {loading ? "Be patient..." : "No results found"}
         </div>
       )}
     </div>

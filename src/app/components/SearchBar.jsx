@@ -1,11 +1,19 @@
 import { useState } from "react";
 
-export default function SearchBar({ onSearch, loading }) {
+export default function SearchBar({ onSearch, loading, sortBy }) {
   const [searchValue, setSearchValue] = useState("");
+  const [isAlphaBoxChecked, setIsAlphaBoxChecked] = useState(true);
 
-  const handleSearch = () => {
+  const triggerSearch = () => {
     onSearch(searchValue);
   };
+
+  const toggleOrderMethod = () => {
+    const updateAlphaChecked = !isAlphaBoxChecked; // On force le recalcul de la valeur de la checkbox pour etre sur que sortBy soit appelé avec la bonne valeur. Sinon ,on risque de se retrouver avec un état décalé à cause de l'asynchronisme de setState.
+    setIsAlphaBoxChecked(updateAlphaChecked);
+    sortBy(updateAlphaChecked);
+  };
+
   return (
     <div className=" w-full fixed bg-gray-300 h-96 z-50">
       <div className="flex  p-5">
@@ -15,7 +23,7 @@ export default function SearchBar({ onSearch, loading }) {
           onChange={(e) => setSearchValue(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              handleSearch();
+              triggerSearch();
             }
           }}
           className="border-2 border-gray-300 bg-white h-10 w-96 px-5 pr-16 rounded-lg text-sm focus:scale-110 focus:outline-none duration-300"
@@ -24,7 +32,7 @@ export default function SearchBar({ onSearch, loading }) {
         <div className="w-5"></div>
         <button
           className="bg-blue-500 border-2 border-blue-400  hover:bg-blue-700 hover:scale-110 h-10 py-2 px-4 rounded-lg duration-300"
-          onClick={handleSearch}
+          onClick={triggerSearch}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -36,13 +44,28 @@ export default function SearchBar({ onSearch, loading }) {
           </svg>
         </button>
       </div>
+      <div className=" flex">
+        <label className="ml-6">
+          <input
+            type="checkbox"
+            checked={isAlphaBoxChecked}
+            onChange={toggleOrderMethod}
+          />
+          Listed by alphabetical order
+        </label>
+        <label className="ml-6">
+          <input
+            type="checkbox"
+            checked={!isAlphaBoxChecked}
+            onChange={toggleOrderMethod}
+          />
+          Listed by rank
+        </label>
+      </div>
+
       {loading ? (
-        <div className="animate-spin h-12 w-12 ml-6 mt-6 border-y-4 rounded-full border-blue-300">
-          true
-        </div>
-      ) : (
-        <div></div>
-      )}
+        <div className="animate-spin h-12 w-12 ml-6 mt-6 border-y-4 rounded-full border-blue-300"></div>
+      ) : null}
     </div>
   );
 }
