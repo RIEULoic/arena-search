@@ -99,7 +99,7 @@ export default function Home() {
         isAlphaBoxChecked={isAlphaBoxChecked}
       />
       {filteredGames.length > 0 ? (
-        <div className=" pt-96 px-4 grid lg:grid-cols-5  md:grid-cols-3 sm:grid-cols-2  gap-y-5">
+        <div className=" pt-60 px-4 grid lg:grid-cols-5  md:grid-cols-3 sm:grid-cols-2  gap-y-5">
           {filteredGames.map((game) => (
             <GameCard key={game.geekId} game={game} />
           ))}
