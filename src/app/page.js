@@ -52,30 +52,15 @@ export default function Home() {
           return nameMatch || artistMatch || designerMatch;
         });
       }
-      sortBy(isAlphaBoxChecked, filtered);
+      applySorting(isAlphaBoxChecked, filtered);
       setLoading(false);
     }, 0); // Simule un délai pour afficher le "loading"
   };
 
-  // const sortBy = (isAlphaBoxChecked) => {
-  //   setLoading(true);
-  //   //Pareil, j'ai rajouté un setTimeout pour simuler un délai de chargement sinon les useStates ne sont pas mis à jour correctement j'ai l'impression.
-  //   setTimeout(() => {
-  //     isAlphaBoxChecked
-  //       ? setFilteredGames((prev) =>
-  //           [...prev].sort((a, b) => a.name.localeCompare(b.name))
-  //         )
-  //       : setFilteredGames((prev) =>
-  //           [...prev].sort((a, b) => b.geekAverage - a.geekAverage)
-  //         );
-  //     setLoading(false);
-  //   }, 0);
-  // };
-
-  const sortBy = (isAlpha, games = filteredGames) => {
+  const applySorting = (isAlpha, filteredGames) => {
     setLoading(true);
     setTimeout(() => {
-      const sortedGames = [...games].sort(
+      const sortedGames = [...filteredGames].sort(
         (a, b) =>
           isAlpha
             ? a.name.localeCompare(b.name) // Tri alphabétique
@@ -91,10 +76,10 @@ export default function Home() {
       <SearchBar
         onSearch={handleSearch}
         loading={loading}
-        sortBy={() => {
-          const newAlphaChecked = !isAlphaBoxChecked;
-          setIsAlphaBoxChecked(newAlphaChecked);
-          sortBy(newAlphaChecked);
+        onToggleSortOrder={() => {
+          const nextAlphaChecked = !isAlphaBoxChecked;
+          setIsAlphaBoxChecked(nextAlphaChecked);
+          applySorting(nextAlphaChecked, filteredGames);
         }}
         isAlphaBoxChecked={isAlphaBoxChecked}
       />

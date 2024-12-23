@@ -1,17 +1,22 @@
 import { useState } from "react";
 
-export default function SearchBar({ onSearch, loading, sortBy }) {
+export default function SearchBar({ onSearch, loading, onToggleSortOrder }) {
   const [searchValue, setSearchValue] = useState("");
   const [isAlphaBoxChecked, setIsAlphaBoxChecked] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const triggerSearch = () => {
     onSearch(searchValue);
   };
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
+
   const toggleSortOrder = () => {
-    const updateAlphaChecked = !isAlphaBoxChecked; // On force le recalcul de la valeur de la checkbox pour etre sur que sortBy soit appelé avec la bonne valeur. Sinon ,on risque de se retrouver avec un état décalé à cause de l'asynchronisme de setState.
+    const updateAlphaChecked = !isAlphaBoxChecked; // On force le recalcul de la valeur de la checkbox pour etre sur que onToggleSortOrder soit appelé avec la bonne valeur. Sinon ,on risque de se retrouver avec un état décalé à cause de l'asynchronisme de setState.
     setIsAlphaBoxChecked(updateAlphaChecked);
-    sortBy(updateAlphaChecked);
+    onToggleSortOrder(updateAlphaChecked);
   };
 
   return (
@@ -66,6 +71,7 @@ export default function SearchBar({ onSearch, loading, sortBy }) {
           </label>
         </div>
       </div>
+
       <div className="flex justify-center items-center ">
         {loading ? (
           <div className="animate-spin h-20 w-20 ml-6 mt-6 border-y-4 rounded-full border-black"></div>
