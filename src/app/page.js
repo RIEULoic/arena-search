@@ -52,9 +52,21 @@ export default function Home() {
           return nameMatch || artistMatch || designerMatch;
         });
       }
+
       applySorting(isAlphaBoxChecked, filtered);
       setLoading(false);
     }, 0); // Simule un délai pour afficher le "loading"
+  };
+
+  const filterByNumberOfPlayers = (id) => {
+    setLoading(true);
+    setTimeout(() => {
+      let filtered = filteredGames.filter((game) => {
+        return game.minPlayers <= id && game.maxPlayers >= id;
+      });
+      applySorting(isAlphaBoxChecked, filtered);
+      setLoading(false);
+    }, 0);
   };
 
   const applySorting = (isAlpha, filteredGames) => {
@@ -82,6 +94,7 @@ export default function Home() {
           applySorting(nextAlphaChecked, filteredGames);
         }}
         isAlphaBoxChecked={isAlphaBoxChecked}
+        filterByNumberOfPlayers={filterByNumberOfPlayers}
       />
       {filteredGames.length > 0 ? (
         <div className=" pt-60 px-4 grid lg:grid-cols-5  md:grid-cols-3 sm:grid-cols-2  gap-y-5">

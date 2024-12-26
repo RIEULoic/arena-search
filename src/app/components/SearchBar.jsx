@@ -1,22 +1,34 @@
 import { useState } from "react";
+import { Dropdown, ToggleSwitch, Checkbox } from "flowbite-react";
 
-export default function SearchBar({ onSearch, loading, onToggleSortOrder }) {
+export default function SearchBar({
+  onSearch,
+  loading,
+  onToggleSortOrder,
+  filterByNumberOfPlayers,
+}) {
   const [searchValue, setSearchValue] = useState("");
   const [isAlphaBoxChecked, setIsAlphaBoxChecked] = useState(true);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedPlayers, setSelectedPlayers] = useState([]);
 
   const triggerSearch = () => {
     onSearch(searchValue);
-  };
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen((prev) => !prev);
   };
 
   const toggleSortOrder = () => {
     const updateAlphaChecked = !isAlphaBoxChecked; // On force le recalcul de la valeur de la checkbox pour etre sur que onToggleSortOrder soit appelé avec la bonne valeur. Sinon ,on risque de se retrouver avec un état décalé à cause de l'asynchronisme de setState.
     setIsAlphaBoxChecked(updateAlphaChecked);
     onToggleSortOrder(updateAlphaChecked);
+  };
+
+  const handlePlayersCheckboxClick = (playerId) => {
+    setSelectedPlayers((prev) => {
+      if (prev.includes(playerId)) {
+        return prev.filter((item) => item !== playerId);
+      } else {
+        return [...prev, playerId];
+      }
+    });
   };
 
   return (
@@ -52,11 +64,9 @@ export default function SearchBar({ onSearch, loading, onToggleSortOrder }) {
         </div>
         <div className=" flex">
           <label className="flex items-center  text-xl gap-2">
-            <input
-              type="checkbox"
+            <ToggleSwitch
               checked={isAlphaBoxChecked}
               onChange={toggleSortOrder}
-              className="w-8 h-8 "
             />
             Listed by alphabetical order
           </label>
@@ -71,11 +81,56 @@ export default function SearchBar({ onSearch, loading, onToggleSortOrder }) {
           </label>
         </div>
       </div>
-
-      <div className="flex justify-center items-center ">
-        {loading ? (
-          <div className="animate-spin h-20 w-20 ml-6 mt-6 border-y-4 rounded-full border-black"></div>
-        ) : null}
+      <div className="flex justify-around">
+        <div className="ml-6">
+          <Dropdown label="Number of players" dismissOnClick={false}>
+            {/* dismissOnClick={false} empèche le comportement par défaut de flowbite qui ferme le dropdown*/}
+            {["solo", "2", "3", "4", "5", "6", "7+"].map((playerId) => (
+              <Dropdown.Item
+                key={playerId}
+                onClick={() => handlePlayersCheckboxClick(playerId)}
+                className="cursor-pointer"
+              >
+                <Checkbox
+                  id={playerId}
+                  className="cursor-pointer mr-2 w-6 h-6"
+                  checked={selectedPlayers.includes(playerId)}
+                  onChange={() => {}} // je met onChange vide pour éviter l'erreur de console. En effet c'est handlePlayersCheckboxClick qui gère le changement de l'état de la checkbox. C'est pas très React-friendly je crois.
+                />
+                {playerId}
+              </Dropdown.Item>
+            ))}
+          </Dropdown>
+        </div>
+        <div className="ml-6">
+          <Dropdown label="Dropdown button">
+            <Dropdown.Item>Dashboard</Dropdown.Item>
+            <Dropdown.Item>Settings</Dropdown.Item>
+            <Dropdown.Item>Earnings</Dropdown.Item>
+            <Dropdown.Item>Sign out</Dropdown.Item>
+          </Dropdown>
+        </div>
+        <div className="flex justify-center items-center  w-20">
+          {loading ? (
+            <div className="animate-spin h-20 w-20 ml-6 mt-6 border-y-4 rounded-full border-black"></div>
+          ) : null}
+        </div>
+        <div className="ml-6">
+          <Dropdown label="Dropdown button">
+            <Dropdown.Item>Dashboard</Dropdown.Item>
+            <Dropdown.Item>Settings</Dropdown.Item>
+            <Dropdown.Item>Earnings</Dropdown.Item>
+            <Dropdown.Item>Sign out</Dropdown.Item>
+          </Dropdown>
+        </div>
+        <div className="ml-6">
+          <Dropdown label="Dropdown button">
+            <Dropdown.Item>Dashboard</Dropdown.Item>
+            <Dropdown.Item>Settings</Dropdown.Item>
+            <Dropdown.Item>Earnings</Dropdown.Item>
+            <Dropdown.Item>Sign out</Dropdown.Item>
+          </Dropdown>
+        </div>
       </div>
     </div>
   );
