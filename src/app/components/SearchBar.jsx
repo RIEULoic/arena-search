@@ -104,10 +104,10 @@ export default function SearchBar({
         </div>
         <div className="ml-6">
           <Dropdown label="Dropdown button">
-            <Dropdown.Item>Dashboard</Dropdown.Item>
-            <Dropdown.Item>Settings</Dropdown.Item>
-            <Dropdown.Item>Earnings</Dropdown.Item>
-            <Dropdown.Item>Sign out</Dropdown.Item>
+            <Dropdown.Item></Dropdown.Item>
+            <Dropdown.Item></Dropdown.Item>
+            <Dropdown.Item></Dropdown.Item>
+            <Dropdown.Item></Dropdown.Item>
           </Dropdown>
         </div>
         <div className="flex justify-center items-center  w-20">
@@ -117,18 +117,18 @@ export default function SearchBar({
         </div>
         <div className="ml-6">
           <Dropdown label="Dropdown button">
-            <Dropdown.Item>Dashboard</Dropdown.Item>
-            <Dropdown.Item>Settings</Dropdown.Item>
-            <Dropdown.Item>Earnings</Dropdown.Item>
-            <Dropdown.Item>Sign out</Dropdown.Item>
+            <Dropdown.Item></Dropdown.Item>
+            <Dropdown.Item></Dropdown.Item>
+            <Dropdown.Item></Dropdown.Item>
+            <Dropdown.Item></Dropdown.Item>
           </Dropdown>
         </div>
         <div className="ml-6">
           <Dropdown label="Dropdown button">
-            <Dropdown.Item>Dashboard</Dropdown.Item>
-            <Dropdown.Item>Settings</Dropdown.Item>
-            <Dropdown.Item>Earnings</Dropdown.Item>
-            <Dropdown.Item>Sign out</Dropdown.Item>
+            <Dropdown.Item></Dropdown.Item>
+            <Dropdown.Item></Dropdown.Item>
+            <Dropdown.Item></Dropdown.Item>
+            <Dropdown.Item></Dropdown.Item>
           </Dropdown>
         </div>
       </div>
