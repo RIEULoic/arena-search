@@ -3,32 +3,16 @@ import { Dropdown, ToggleSwitch, Checkbox } from "flowbite-react";
 
 export default function SearchBar({
   onSearch,
-  loading,
+  isLoading,
   onToggleSortOrder,
-  filterByNumberOfPlayers,
+  onTogglePlayersCheckbox,
+  isAlphaSort,
+  playerFilters,
 }) {
-  const [searchValue, setSearchValue] = useState("");
-  const [isAlphaBoxChecked, setIsAlphaBoxChecked] = useState(true);
-  const [selectedPlayers, setSelectedPlayers] = useState([]);
+  const [localSearchTerm, setLocalSearchTerm] = useState("");
 
   const triggerSearch = () => {
-    onSearch(searchValue);
-  };
-
-  const toggleSortOrder = () => {
-    const updateAlphaChecked = !isAlphaBoxChecked; // On force le recalcul de la valeur de la checkbox pour etre sur que onToggleSortOrder soit appelé avec la bonne valeur. Sinon ,on risque de se retrouver avec un état décalé à cause de l'asynchronisme de setState.
-    setIsAlphaBoxChecked(updateAlphaChecked);
-    onToggleSortOrder(updateAlphaChecked);
-  };
-
-  const handlePlayersCheckboxClick = (playerId) => {
-    setSelectedPlayers((prev) => {
-      if (prev.includes(playerId)) {
-        return prev.filter((item) => item !== playerId);
-      } else {
-        return [...prev, playerId];
-      }
-    });
+    onSearch(localSearchTerm);
   };
 
   return (
@@ -37,8 +21,8 @@ export default function SearchBar({
         <div className="flex gap-1">
           <input
             type="text"
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            value={localSearchTerm}
+            onChange={(e) => setLocalSearchTerm(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 triggerSearch();
@@ -64,17 +48,14 @@ export default function SearchBar({
         </div>
         <div className=" flex">
           <label className="flex items-center  text-xl gap-2">
-            <ToggleSwitch
-              checked={isAlphaBoxChecked}
-              onChange={toggleSortOrder}
-            />
+            <ToggleSwitch checked={isAlphaSort} onChange={onToggleSortOrder} />
             Listed by alphabetical order
           </label>
           <label className="flex items-center ml-6 text-xl gap-2">
             <input
               type="checkbox"
-              checked={!isAlphaBoxChecked}
-              onChange={toggleSortOrder}
+              checked={!isAlphaSort}
+              onChange={onToggleSortOrder}
               className="w-8 h-8"
             />
             Listed by rank
@@ -85,17 +66,17 @@ export default function SearchBar({
         <div className="ml-6">
           <Dropdown label="Number of players" dismissOnClick={false}>
             {/* dismissOnClick={false} empèche le comportement par défaut de flowbite qui ferme le dropdown*/}
-            {["solo", "2", "3", "4", "5", "6", "7+"].map((playerId) => (
+            {["solo", 2, 3, 4, 5, 6, "7+"].map((playerId) => (
               <Dropdown.Item
                 key={playerId}
-                onClick={() => handlePlayersCheckboxClick(playerId)}
+                onClick={() => onTogglePlayersCheckbox(playerId)}
                 className="cursor-pointer"
               >
                 <Checkbox
                   id={playerId}
                   className="cursor-pointer mr-2 w-6 h-6"
-                  checked={selectedPlayers.includes(playerId)}
-                  onChange={() => {}} // je met onChange vide pour éviter l'erreur de console. En effet c'est handlePlayersCheckboxClick qui gère le changement de l'état de la checkbox. C'est pas très React-friendly je crois.
+                  checked={playerFilters.includes(playerId)}
+                  readOnly // je met readOnly pour éviter l'erreur de console. En effet c'est togglePlayerFilter qui gère le changement de l'état de la checkbox.
                 />
                 {playerId}
               </Dropdown.Item>
@@ -111,7 +92,7 @@ export default function SearchBar({
           </Dropdown>
         </div>
         <div className="flex justify-center items-center  w-20">
-          {loading ? (
+          {isLoading ? (
             <div className="animate-spin h-20 w-20 ml-6 mt-6 border-y-4 rounded-full border-black"></div>
           ) : null}
         </div>

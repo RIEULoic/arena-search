@@ -13,10 +13,10 @@ export async function GET() {
     const fileContent = await fs.readFile(filePath, "utf8");
 
     // Parse et retourne le fichier JSON
-    const arenaGamesData = JSON.parse(fileContent);
+    const allGames = JSON.parse(fileContent);
 
     //Response.json() une méthode simplifiée introduite par Next.js pour renvoyer une réponse JSON plus facilement. Elle encapsule les appels à JSON.stringify() et les headers appropriés
-    return Response.json(arenaGamesData);
+    return Response.json(allGames);
   } catch (error) {
     console.error("Erreur lors de la lecture du fichier JSON:", error);
     //On renvoie quand même une réponse au format JSON, mais avec un code d'état 500 (erreur interne du serveur)
