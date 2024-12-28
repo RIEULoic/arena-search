@@ -52,12 +52,7 @@ export default function SearchBar({
             Listed by alphabetical order
           </label>
           <label className="flex items-center ml-6 text-xl gap-2">
-            <input
-              type="checkbox"
-              checked={!isAlphaSort}
-              onChange={onToggleSortOrder}
-              className="w-8 h-8"
-            />
+            <ToggleSwitch checked={!isAlphaSort} onChange={onToggleSortOrder} />
             Listed by rank
           </label>
         </div>
