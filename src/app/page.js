@@ -12,6 +12,8 @@ export default function Home() {
   const [isAlphaSort, setIsAlphaSort] = useState(true);
   const [playerFilters, setPlayerFilters] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [categoriesList, setCategoriesList] = useState([]);
+  const [catFilters, setCatFilters] = useState([]);
 
   useEffect(() => {
     // Appeler l'API route pour récupérer les données JSON.
@@ -20,6 +22,17 @@ export default function Home() {
       .then((data) => {
         setAllGames(data);
         setFilteredGamesList(data);
+
+        const categories = new Set();
+        data.forEach((game) => {
+          if (!game.gameCategoryLinks) return;
+
+          game.gameCategoryLinks.forEach((cat) => {
+            categories.add(cat.value);
+          });
+        });
+        const categoriesArray = Array.from(categories).sort();
+        setCategoriesList(categoriesArray);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -69,6 +82,16 @@ export default function Home() {
       });
     }
 
+    if (catFilters.length > 0) {
+      result = result.filter((game) => {
+        // Si un jeu n'a pas de categoryLinks, on l'élimine direct.
+        if (!game.gameCategoryLinks) return false;
+        return catFilters.every((cat) =>
+          game.gameCategoryLinks.some((catObj) => catObj.value === cat)
+        );
+      });
+    }
+
     if (isAlphaSort) {
       result.sort((a, b) => a.name.localeCompare(b.name));
     } else {
@@ -77,7 +100,7 @@ export default function Home() {
 
     setFilteredGamesList(result);
     setIsLoading(false);
-  }, [searchTerm, playerFilters, isAlphaSort, allGames]);
+  }, [searchTerm, playerFilters, isAlphaSort, allGames, catFilters]);
 
   const togglePlayerFilter = (playerId) => {
     setPlayerFilters((prev) => {
@@ -85,6 +108,16 @@ export default function Home() {
         return prev.filter((item) => item !== playerId);
       } else {
         return [...prev, playerId];
+      }
+    });
+  };
+
+  const toggleCategoryFilter = (catId) => {
+    setCatFilters((prev) => {
+      if (prev.includes(catId)) {
+        return prev.filter((item) => item !== catId);
+      } else {
+        return [...prev, catId];
       }
     });
   };
@@ -106,6 +139,9 @@ export default function Home() {
         isAlphaSort={isAlphaSort}
         playerFilters={playerFilters}
         onTogglePlayersCheckbox={togglePlayerFilter}
+        categoriesList={categoriesList}
+        onToggleCategoryCheckbox={toggleCategoryFilter}
+        catFilters={catFilters}
       />
       {filteredGamesList.length > 0 ? (
         <div className=" pt-60 px-4 grid lg:grid-cols-5  md:grid-cols-3 sm:grid-cols-2  gap-y-5">

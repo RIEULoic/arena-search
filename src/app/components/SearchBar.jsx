@@ -8,6 +8,9 @@ export default function SearchBar({
   onTogglePlayersCheckbox,
   isAlphaSort,
   playerFilters,
+  categoriesList,
+  onToggleCategoryCheckbox,
+  catFilters,
 }) {
   const [localSearchTerm, setLocalSearchTerm] = useState("");
 
@@ -79,11 +82,26 @@ export default function SearchBar({
           </Dropdown>
         </div>
         <div className="ml-6">
-          <Dropdown label="Dropdown button">
-            <Dropdown.Item></Dropdown.Item>
-            <Dropdown.Item></Dropdown.Item>
-            <Dropdown.Item></Dropdown.Item>
-            <Dropdown.Item></Dropdown.Item>
+          <Dropdown
+            className="max-h-96 overflow-auto"
+            label="Categories"
+            dismissOnClick={false}
+          >
+            {categoriesList.map((cat) => (
+              <Dropdown.Item
+                key={cat}
+                onClick={() => onToggleCategoryCheckbox(cat)}
+                className="cursor-pointer"
+              >
+                <Checkbox
+                  id={cat}
+                  className="cursor-pointer mr-2 w-6 h-6"
+                  checked={catFilters.includes(cat)}
+                  readOnly // je met readOnly pour éviter l'erreur de console. En effet c'est togglePlayerFilter qui gère le changement de l'état de la checkbox.
+                />
+                {cat}
+              </Dropdown.Item>
+            ))}
           </Dropdown>
         </div>
         <div className="flex justify-center items-center  w-20">
